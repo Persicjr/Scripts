@@ -3,19 +3,18 @@ $extensions = @(".txt", ".docx", ".xlsx", ".jpg", ".png", ".pptx") # List of fil
 $minSize = 1 # Minimum file size in kilobytes
 $maxSize = 1000 # Maximum file size in kilobytes
 
-$numberOfFiles = 5 # Number of files to generate
+$numberOfFiles = 500 # Number of files to generate
 
 $destinationPath = "C:\Files" # Destination folder to save the generated files
 
-# Generate random file name
-function Get-RandomFileName {
-    $characters = "abcdefghijklmnopqrstuvwxyz0123456789"
-    $randomName = ""
-    $length = Get-Random -Minimum 5 -Maximum 10
+# Load a wordlist or dictionary to generate real word file names
+$wordlistPath = "C:\wordlist.txt"
+$wordlist = Get-Content $wordlistPath
 
-    for ($i = 1; $i -le $length; $i++) {
-        $randomName += $characters[(Get-Random -Minimum 0 -Maximum $characters.Length)]
-    }
+# Generate random file name from the wordlist
+function Get-RandomFileName {
+    $randomIndex = Get-Random -Minimum 0 -Maximum $wordlist.Length
+    $randomName = $wordlist[$randomIndex]
 
     return $randomName
 }
