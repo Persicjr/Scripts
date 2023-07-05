@@ -1,0 +1,6 @@
+# Maps M drive to PCs
+$cred = Get-Credential
+$share = "\\mc-fs-1\Mittelberg"
+$drive = "M"
+
+New-PSDrive -Name $drive -PSProvider FileSystem -Root $share -Credential $cred -Persist
