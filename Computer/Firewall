@@ -1,0 +1,6 @@
+# Disable the Windows Firewall
+Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False
+
+# Verify the status of the Windows Firewall
+$firewallStatus = Get-NetFirewallProfile | Select-Object Name, Enabled
+$firewallStatus
