@@ -1,0 +1,14 @@
+$computerName = "mc-city-win10-5"
+$newComputerName = "mc-city-win10-5"
+
+# Set the new computer name
+Rename-Computer -NewName $newComputerName -Force
+
+# Import the Active Directory module
+Import-Module ActiveDirectory
+
+# Set the credentials for joining the domain
+$joinCred = New-Object System.Management.Automation.PSCredential("RangeControl", (ConvertTo-SecureString -AsPlainText -Force "R@ng3P@`$`$w0rd!!"))
+
+# Join the computer to the domain
+Add-Computer -DomainName "cityofmittelberg.gov" -Credential $joinCred -Force
