@@ -1,5 +1,7 @@
-# Disable the Windows Firewall
-Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False
+# Disable the Windows Firewall in the registry
+Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\StandardProfile" -Name "EnableFirewall" -Value 0
+Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\PublicProfile" -Name "EnableFirewall" -Value 0
+Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\DomainProfile" -Name "EnableFirewall" -Value 0
 
 # Verify the status of the Windows Firewall
 $firewallStatus = Get-NetFirewallProfile | Select-Object Name, Enabled
