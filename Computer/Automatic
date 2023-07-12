@@ -1,0 +1,35 @@
+# Set the list of computer IP addresses to join
+$IPAddresses = @("192.168.0.101", "192.168.0.102", "192.168.0.103")
+
+# Set the domain information
+$DomainName = "cityofmittelberg.gov"
+
+# Create the PSCredential object for joining the domain
+$JoinCredential = New-Object System.Management.Automation.PSCredential ("RangeControl", $(ConvertTo-SecureString -AsPlainText -Force "R@ng3P@$$w0rd"))
+
+# Loop through each computer IP address and join it to the domain
+foreach ($IP in $IPAddresses) {
+    try {
+        # Join the computer to the domain
+        Add-Computer -Domain $DomainName -Credential $JoinCredential -Server $IP -Force -ErrorAction Stop
+
+        Write-Host "Successfully joined computer with IP address $IP to the domain."
+
+        # Disable Windows Firewall for all profiles by modifying registry values
+        $RegistryPath = "\\$IP\HKLM\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy"
+        $RegistryProfiles = @("DomainProfile", "StandardProfile", "PublicProfile")
+        $RegistryName = "EnableFirewall"
+        $NewRegistryValue = 0
+
+        foreach ($Profile in $RegistryProfiles) {
+            $ProfileRegistryPath = "$RegistryPath\$Profile"
+            $RegistryKey = [Microsoft.Win32.RegistryKey]::OpenRemoteBaseKey('LocalMachine', $IP)
+            $RegistryKey.SetValue($ProfileRegistryPath, $RegistryName, $NewRegistryValue)
+            $RegistryKey.Close()
+        }
+
+        Write-Host "Disabled Windows Firewall on all profiles for computer with IP address $IP."
+    } catch {
+        Write-Host "Failed to join computer with IP address $IP to the domain or disable Windows Firewall. Error: $($_.Exception.Message)"
+    }
+}
