@@ -3,9 +3,9 @@ $extensions = @(".txt", ".docx", ".xlsx", ".jpg", ".png", ".pptx") # List of fil
 $minSize = 1 # Minimum file size in kilobytes
 $maxSize = 1000 # Maximum file size in kilobytes
 
-$numberOfFiles = 500 # Number of files to generate
+$numberOfFiles = 30 # Number of files to generate
 
-$destinationPath = "C:\Files" # Destination folder to save the generated files
+$destinationPath = "C:\Shares\IT" # Destination folder to save the generated files
 
 # Load a wordlist or dictionary to generate real word file names
 $wordlistPath = "C:\wordlist.txt"
